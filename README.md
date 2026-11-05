@@ -8,6 +8,9 @@ permet de lancer un scénario et de lire les résultats.
 Le projet reste volontairement minimal : pas de dépendance à un framework front, pas de
 pipeline ML Python, pas de base de données. Les résultats sont des fichiers CSV/JSON.
 
+> **Atelier 3 (Solidity)** : le contrat `MiniSocial` se trouve dans `atelier3/MiniSocial.sol`.
+> Le rapport détaillé est dans `report/rapport_atelier3.md`.
+
 ---
 
 ## Démarrage rapide

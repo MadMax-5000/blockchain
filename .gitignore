@@ -22,3 +22,9 @@ desktop.ini
 
 # Logs
 *.log
+
+# Solidity / Node
+node_modules/
+artifacts/
+cache/
+atelier3/build/
