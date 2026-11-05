@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Runs — Blockchain Attack Lab{% endblock %}
+{% block content %}
+
+<section class="page-head">
+  <div>
+    <p class="eyebrow">History</p>
+    <h1>Runs</h1>
+    <p class="lede">Every simulation is deterministic for a given seed and scenario.</p>
+  </div>
+  <a class="btn" href="/launch">New run</a>
+</section>
+
+{% if runs %}
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Run</th>
+        <th>Attack</th>
+        <th>Consensus</th>
+        <th class="right">Nodes</th>
+        <th class="right">Share</th>
+        <th>Defense</th>
+        <th>Result</th>
+        <th class="right">Reorg</th>
+        <th class="right">Orphans</th>
+        <th class="right">Detection</th>
+        <th class="right">Runtime</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for run in runs %}
+      <tr>
+        <td><a class="run-link" href="/runs/{{ run.slug }}">{{ run.slug }}</a></td>
+        <td>{{ attack_label(run.attack) }}</td>
+        <td><span class="badge">{{ consensus_label(run.consensus) }}</span></td>
+        <td class="right mono">{{ run.nodes }}</td>
+        <td class="right mono">{{ run.attack_share | pct }}</td>
+        <td>
+          {% if run.defense %}<span class="badge badge-green">On</span>
+          {% else %}<span class="badge">Off</span>{% endif %}
+        </td>
+        <td>
+          {% if run.attack == 'none' %}
+            <span class="badge">Baseline</span>
+          {% elif run.attack_success %}
+            <span class="badge badge-red">Succeeded</span>
+          {% else %}
+            <span class="badge badge-green">Blocked</span>
+          {% endif %}
+        </td>
+        <td class="right mono">{{ run.max_reorg_depth }}</td>
+        <td class="right mono">{{ run.orphan_rate | pct }}</td>
+        <td class="right mono">{{ run.detection_time_ms | ms }}</td>
+        <td class="right mono">{{ run.runtime_ms | num(0) }} ms</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="empty-state">
+  <h2>No runs yet</h2>
+  <p>Launch a scenario from the dashboard or run the experiment matrix.</p>
+  <a class="btn" href="/launch">New run</a>
+</div>
+{% endif %}
+
+{% endblock %}

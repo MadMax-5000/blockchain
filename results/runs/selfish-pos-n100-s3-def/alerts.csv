@@ -1,0 +1,7 @@
+window,t,score,label,suspect,type
+2,300000,0.850000,1,99,consensus
+13,1400000,0.600000,1,99,consensus
+17,1800000,0.600000,1,99,consensus
+18,1900000,0.500000,1,99,consensus
+24,2500000,1.000000,1,99,consensus
+25,2600000,1.000000,1,99,consensus

@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.env
+
+# Binaires compiles
+sim.exe
+*.exe
+*.o
+*.obj
+bin/*.exe
+
+# Systeme
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Artefacts de revue visuelle
+.taste-skill/
+
+# Logs
+*.log

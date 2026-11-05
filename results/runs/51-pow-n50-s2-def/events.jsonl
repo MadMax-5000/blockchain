@@ -1,0 +1,4 @@
+{"t":200000,"type":"attack_start","src":-1,"dst":-1,"block":-1,"detail":"51/double-spend"}
+{"t":206349,"type":"payment_include","src":23,"dst":-1,"block":25,"detail":"VICTIM"}
+{"t":514752,"type":"payment_accept","src":0,"dst":-1,"block":25,"detail":"confirmed"}
+{"t":514769,"type":"publish","src":49,"dst":-1,"block":56,"detail":"51"}

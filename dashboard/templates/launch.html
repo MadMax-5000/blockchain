@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}New run — Blockchain Attack Lab{% endblock %}
+{% block content %}
+
+<a class="back" href="/">← Overview</a>
+
+<section class="page-head">
+  <div>
+    <p class="eyebrow">Scenario</p>
+    <h1>New run</h1>
+    <p class="lede">Pick an attack and a network size. The simulator runs locally and writes a new result folder.</p>
+  </div>
+</section>
+
+{% if error %}
+<div class="alert">{{ error }}</div>
+{% endif %}
+
+<form class="card form" method="post" action="/launch">
+  <div class="form-grid">
+    <label>
+      <span>Name <span class="muted">(optional)</span></span>
+      <input type="text" name="name" value="{{ form.name }}" placeholder="e.g. selfish-pow-n50">
+    </label>
+
+    <label>
+      <span>Attack</span>
+      <select name="attack">
+        {% for key, label in [('none','Baseline'), ('51','51% attack'), ('selfish','Selfish mining'), ('withholding','Block withholding'), ('sybil','Sybil / eclipse')] %}
+        <option value="{{ key }}" {% if form.attack == key %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </label>
+
+    <label>
+      <span>Consensus</span>
+      <select name="consensus">
+        <option value="pow" {% if form.consensus == 'pow' %}selected{% endif %}>Proof of Work</option>
+        <option value="pos" {% if form.consensus == 'pos' %}selected{% endif %}>Proof of Stake</option>
+      </select>
+    </label>
+
+    <label>
+      <span>Nodes</span>
+      <input type="number" name="nodes" min="5" max="200" value="{{ form.nodes }}">
+    </label>
+
+    <label>
+      <span>Attacker share</span>
+      <input type="number" name="attacker_share" min="0.05" max="0.95" step="0.01" value="{{ form.attacker_share }}">
+    </label>
+
+    <label>
+      <span>Defense</span>
+      <select name="defense">
+        <option value="0" {% if form.defense == '0' %}selected{% endif %}>Off</option>
+        <option value="1" {% if form.defense == '1' %}selected{% endif %}>On</option>
+      </select>
+    </label>
+
+    <label>
+      <span>Seed</span>
+      <input type="number" name="seed" min="0" value="{{ form.seed }}">
+    </label>
+
+    <label>
+      <span>Duration (blocks)</span>
+      <input type="number" name="duration_blocks" min="50" max="2000" value="{{ form.duration_blocks }}">
+    </label>
+  </div>
+
+  <div class="form-actions">
+    <button class="btn" type="submit">Run simulation</button>
+    <a class="btn btn-secondary" href="/">Cancel</a>
+  </div>
+</form>
+
+<p class="muted small">
+  Detection uses the rule-based detector. Defense enables confirmation depth, reorg cap,
+  pool audit, peer diversity, tie randomization and the selfish-mining penalty.
+</p>
+
+{% endblock %}

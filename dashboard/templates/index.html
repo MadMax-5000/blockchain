@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block title %}Overview — Blockchain Attack Lab{% endblock %}
+{% block content %}
+
+<section class="hero">
+  <p class="eyebrow">Atelier 2</p>
+  <h1>Simulate attacks.<br>Measure the network.</h1>
+  <p class="lede">
+    A deterministic PoW/PoS blockchain simulator with four attacks, rule-based detection,
+    and targeted mitigations. Launch a scenario and inspect the result.
+  </p>
+  <div class="hero-actions">
+    <a class="btn" href="/launch">New run</a>
+    <a class="btn btn-secondary" href="/runs">View all runs</a>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="stat">
+    <span class="stat-label">Runs</span>
+    <span class="stat-value">{{ stats.runs }}</span>
+  </div>
+  <div class="stat">
+    <span class="stat-label">Attack runs</span>
+    <span class="stat-value">{{ stats.attacks }}</span>
+  </div>
+  <div class="stat">
+    <span class="stat-label">Detection rate</span>
+    <span class="stat-value">{{ stats.detection_rate | pct }}</span>
+  </div>
+  <div class="stat">
+    <span class="stat-label">Avg. detection</span>
+    <span class="stat-value">{{ stats.avg_detection_ms | ms }}</span>
+  </div>
+</section>
+
+<section class="card">
+  <div class="card-head">
+    <div>
+      <h2>Attack success rate</h2>
+      <p class="muted">Without defense vs. with defense, across all recorded runs.</p>
+    </div>
+    <div class="legend">
+      <span><i class="dot dot-black"></i>No defense</span>
+      <span><i class="dot dot-blue"></i>Defense</span>
+    </div>
+  </div>
+
+  {% if chart %}
+  <div class="chart">
+    {% for row in chart %}
+    <div class="chart-row">
+      <div class="chart-label">
+        <span>{{ row.label }}</span>
+        <span class="muted small">{{ row.attack_runs }} / {{ row.defense_runs }} runs</span>
+      </div>
+      <div class="chart-bars">
+        <div class="bar-track"><div class="bar bar-black" style="width: {{ row.attack_pct }}%"></div></div>
+        <div class="bar-track"><div class="bar bar-blue" style="width: {{ row.defense_pct }}%"></div></div>
+      </div>
+      <div class="chart-value">
+        <span>{{ row.attack_pct }}%</span>
+        <span class="muted">{{ row.defense_pct }}%</span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="empty">No runs yet. Launch a scenario or run <code>python run_experiments.py</code>.</p>
+  {% endif %}
+</section>
+
+<section class="section-head">
+  <h2>Recent runs</h2>
+  <a class="link" href="/runs">View all →</a>
+</section>
+
+{% if runs %}
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Run</th>
+        <th>Attack</th>
+        <th>Consensus</th>
+        <th class="right">Nodes</th>
+        <th>Defense</th>
+        <th>Result</th>
+        <th class="right">Orphans</th>
+        <th class="right">Detection</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for run in runs %}
+      <tr>
+        <td><a class="run-link" href="/runs/{{ run.slug }}">{{ run.slug }}</a></td>
+        <td>{{ attack_label(run.attack) }}</td>
+        <td><span class="badge">{{ consensus_label(run.consensus) }}</span></td>
+        <td class="right mono">{{ run.nodes }}</td>
+        <td>
+          {% if run.defense %}<span class="badge badge-green">On</span>
+          {% else %}<span class="badge">Off</span>{% endif %}
+        </td>
+        <td>
+          {% if run.attack == 'none' %}
+            <span class="badge">Baseline</span>
+          {% elif run.attack_success %}
+            <span class="badge badge-red">Succeeded</span>
+          {% else %}
+            <span class="badge badge-green">Blocked</span>
+          {% endif %}
+        </td>
+        <td class="right mono">{{ run.orphan_rate | pct }}</td>
+        <td class="right mono">{{ run.detection_time_ms | ms }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<p class="empty">No runs yet.</p>
+{% endif %}
+
+{% endblock %}
