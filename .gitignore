@@ -27,4 +27,17 @@ desktop.ini
 node_modules/
 artifacts/
 cache/
+typechain-types/
+coverage/
+coverage.json
 atelier3/build/
+
+# Frontend (certificats)
+certificats/frontend/dist/
+certificats/frontend/.vite/
+certificats/contracts/.env
+certificats/frontend/.env
+
+# Divers
+*.tsbuildinfo
+.DS_Store

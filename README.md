@@ -10,6 +10,10 @@ pipeline ML Python, pas de base de données. Les résultats sont des fichiers CS
 
 > **Atelier 3 (Solidity)** : le contrat `MiniSocial` se trouve dans `atelier3/MiniSocial.sol`.
 > Le rapport détaillé est dans `report/rapport_atelier3.md`.
+>
+> **Devoirs 1 & 2 (certificats blockchain)** : projet autonome dans `certificats/` — contrats
+> Hardhat, frontend React, import Excel, ERC-721 et rapport d'audit. Voir
+> [`certificats/README.md`](certificats/README.md).
 
 ---
 
@@ -188,3 +192,32 @@ code :
 | `ex4_blockchain.c` | `blockchain_core.c` |
 
 Les démos se compilent avec `mingw32-make demos` dans `bin/`.
+
+---
+
+## Devoirs 1 & 2 — Certificats académiques on-chain (`certificats/`)
+
+Projet complet et autonome : registre de certificats académiques, puis migration vers
+ERC-721 avec OpenZeppelin, frontend React et rapport d'audit.
+
+| Livrable | Contenu |
+|---|---|
+| **Devoir 1** | `CertificateRegistry.sol` : mint unitaire, `batchMint`, `getCertificate`, `revoke`, owner + admins, unicité du `studentId` |
+| **Devoir 2** | `CertificateNFT.sol` : ERC-721 (`ERC721URIStorage`), `AccessControl` / `MINTER_ROLE`, `tokenURI` JSON on-chain, soulbound, `nonReentrant` |
+| Frontend | React + Vite + shadcn/ui, wagmi/viem, import Excel (SheetJS), vérification publique |
+| Tests | 41 tests Hardhat (20 v1 + 21 v2) |
+| Audit | [`certificats/docs/audit-report.md`](certificats/docs/audit-report.md) |
+| Données | `certificats/data/etudiants.xlsx` (8 lignes, doublon volontaire) |
+
+```bash
+cd certificats
+npm install
+
+npm run node            # terminal 1 — nœud Hardhat local (chainId 31337)
+npm run deploy:local    # terminal 2 — déploie v1 + v2, exporte ABI et adresses
+npm run seed:local      # émet 7 certificats de démonstration
+npm run dev             # terminal 3 — frontend sur http://localhost:5173
+```
+
+Documentation détaillée : [`certificats/README.md`](certificats/README.md).
+

@@ -1,0 +1,23 @@
+{
+  "name": "certificats",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Système de certification académique sur blockchain — Devoirs 1 & 2",
+  "workspaces": [
+    "contracts",
+    "frontend"
+  ],
+  "scripts": {
+    "compile": "npm run compile -w contracts",
+    "test": "npm run test -w contracts",
+    "node": "npm run node -w contracts",
+    "deploy:local": "npm run deploy:local -w contracts",
+    "seed:local": "npm run seed:local -w contracts",
+    "smoke:local": "npm run smoke:local -w contracts",
+    "excel": "npm run excel -w contracts",
+    "export": "npm run export -w contracts",
+    "dev": "npm run dev -w frontend",
+    "build": "npm run build -w frontend",
+    "typecheck": "npm run typecheck -w frontend"
+  }
+}
