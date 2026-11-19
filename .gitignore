@@ -38,6 +38,11 @@ certificats/frontend/.vite/
 certificats/contracts/.env
 certificats/frontend/.env
 
+# LaTeX (rapports)
+*.aux
+*.out
+*.toc
+
 # Divers
 *.tsbuildinfo
 .DS_Store

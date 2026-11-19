@@ -26,17 +26,33 @@ export function ConnectButton() {
         size="sm"
         disabled={isPending}
         onClick={() => {
-          const connector = connectors[0];
-          if (!connector) {
-            toast.error("Aucun wallet détecté. Installez MetaMask.");
-            return;
-          }
-          connect(
-            { connector },
-            {
-              onError: (error) => toast.error(getErrorMessage(error)),
-            },
-          );
+          void (async () => {
+            let available: (typeof connectors)[number] | undefined;
+            for (const connector of connectors) {
+              try {
+                if (await connector.getProvider()) {
+                  available = connector;
+                  break;
+                }
+              } catch {
+                // Connecteur indisponible : on essaie le suivant.
+              }
+            }
+
+            if (!available) {
+              toast.error("Aucun wallet détecté dans le navigateur.", {
+                description: "Installez MetaMask (ou activez Brave Wallet), puis rechargez la page.",
+              });
+              return;
+            }
+
+            connect(
+              { connector: available },
+              {
+                onError: (error) => toast.error(getErrorMessage(error)),
+              },
+            );
+          })();
         }}
       >
         <Wallet className="h-4 w-4" />

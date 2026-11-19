@@ -24,7 +24,8 @@ certificats/
 │   └── etudiants.xlsx         fichier d'import d'exemple
 ├── docs/
 │   ├── devoir1.md             choix de conception du registre
-│   └── audit-report.md        rapport d'audit du Devoir 2
+│   ├── audit-report.md        rapport d'audit du Devoir 2
+│   └── latex/                 rapports PDF des deux devoirs (sources .tex)
 └── package.json               npm workspaces
 ```
 
@@ -109,6 +110,11 @@ Dans le frontend : menu réseau → **Ajouter Hardhat à MetaMask**, ou manuelle
 Importer un compte de test Hardhat avec sa clé privée affichée par `npm run node`
 (compte #0 = owner/admin, comptes #1–#7 = destinataires).
 
+Le bouton « Connecter » attend un wallet injecté (`window.ethereum`). Sans
+extension MetaMask ou Brave Wallet dans le navigateur, il affiche désormais un
+message explicite au lieu de l'erreur brute `Provider not found` de wagmi.
+La page `/verify` n'a pas besoin de wallet : elle lit directement le RPC.
+
 ---
 
 ## Modèle Excel
@@ -166,6 +172,15 @@ n'annule pas les lots précédents (comportement documenté dans le rapport d'au
 
 Checklist appliquée, vulnérabilités recherchées, résultats des tests, risques résiduels
 et recommandations. Rapport complet : [`docs/audit-report.md`](docs/audit-report.md).
+
+### Rapports LaTeX
+
+Deux rapports de devoir en français, avec les sources et les PDF générés :
+
+- [`docs/latex/devoir1.pdf`](docs/latex/devoir1.pdf) ---
+  registre, import Excel et vérification ;
+- [`docs/latex/devoir2.pdf`](docs/latex/devoir2.pdf) ---
+  migration ERC-721, sécurité et audit.
 
 ---
 

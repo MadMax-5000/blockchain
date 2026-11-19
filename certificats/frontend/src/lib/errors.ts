@@ -23,6 +23,10 @@ const REVERT_MESSAGES: Record<string, string> = {
 export function getErrorMessage(error: unknown): string {
   if (!error) return "Erreur inconnue.";
 
+  if (error instanceof Error && error.name === "ProviderNotFoundError") {
+    return "Aucun wallet détecté. Installez MetaMask puis rechargez la page.";
+  }
+
   if (error instanceof ContractFunctionRevertedError) {
     return mapRevert(error);
   }
