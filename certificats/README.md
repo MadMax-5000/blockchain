@@ -25,6 +25,7 @@ certificats/
 ├── docs/
 │   ├── devoir1.md             choix de conception du registre
 │   ├── audit-report.md        rapport d'audit du Devoir 2
+│   ├── presentation-guide.md  aide pour la soutenance (scénarios de démo)
 │   └── latex/                 rapports PDF des deux devoirs (sources .tex)
 └── package.json               npm workspaces
 ```
@@ -181,6 +182,12 @@ Deux rapports de devoir en français, avec les sources et les PDF générés :
   registre, import Excel et vérification ;
 - [`docs/latex/devoir2.pdf`](docs/latex/devoir2.pdf) ---
   migration ERC-721, sécurité et audit.
+
+### Soutenance
+
+[`docs/presentation-guide.md`](docs/presentation-guide.md) : explication du projet,
+rôle de chaque écran, scénarios de démonstration, commandes, repères et réponses
+aux questions probables du professeur.
 
 ---
 
