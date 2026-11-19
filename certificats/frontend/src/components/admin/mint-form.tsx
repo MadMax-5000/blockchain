@@ -13,7 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { TxHash } from "@/components/common/tx-hash";
 import { ConnectButton } from "@/components/wallet/connect-button";
 import { getErrorMessage } from "@/lib/errors";
-import { todayISO } from "@/lib/format";
+import { shortenAddress, todayISO } from "@/lib/format";
 import { useCertificateActions } from "@/hooks/use-actions";
 import { useContractStatus } from "@/hooks/use-contract-status";
 import { useVersion } from "@/hooks/use-version";
@@ -128,11 +128,15 @@ export function MintForm() {
           {status.data && !status.data.canMint ? (
             <Alert variant="destructive" className="mb-5">
               <ShieldAlert />
-              <AlertTitle>Compte non autorisé</AlertTitle>
+              <AlertTitle>
+                {version === "v1" && status.data.paused ? "Émissions en pause" : "Compte non autorisé"}
+              </AlertTitle>
               <AlertDescription>
                 {version === "v2"
-                  ? "Ce compte n'a pas MINTER_ROLE. Un administrateur peut l'accorder dans l'onglet Administration."
-                  : "Ce compte n'est ni owner ni admin du registre. Contactez le owner du contrat."}
+                  ? `Ce compte (${address ? shortenAddress(address) : "inconnu"}) n'a pas MINTER_ROLE. Un administrateur peut l'accorder dans l'onglet Administration.`
+                  : status.data.paused
+                    ? "Le contrat est en pause. Réactivez les émissions depuis l'onglet Administration."
+                    : `Compte ${address ? shortenAddress(address) : "inconnu"} connecté. Owner du registre : ${status.data.owner ? shortenAddress(status.data.owner) : "—"}. Importez le compte Hardhat #0 dans MetaMask, ou demandez à l'owner de vous ajouter comme admin.`}
               </AlertDescription>
             </Alert>
           ) : null}
