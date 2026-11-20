@@ -1,5 +1,6 @@
 \documentclass[11pt,a4paper,parskip=half]{scrartcl}
 
+\usepackage[a4paper, top=2.8cm, bottom=2.8cm, left=2.5cm, right=2.5cm, headheight=15pt]{geometry}
 \usepackage{fontspec}
 \usepackage[french]{babel}
 \usepackage{microtype}
@@ -10,7 +11,10 @@
 \usepackage{setspace}
 \usepackage{listings}
 \usepackage{hyperref}
+\usepackage{tcolorbox}
+\usepackage[headsepline=0.5pt,footsepline=0.5pt]{scrlayer-scrpage}
 
+% Font configuration (Inter preserved)
 \setmainfont{Inter}[
   Path           = fonts/,
   Extension      = .ttf,
@@ -22,50 +26,79 @@
 
 \DeclareFontShape{TU}{Inter(0)}{b}{sc}{<-> ssub*Inter(0)/b/n}{}
 
+% Refined Color Palette
 \definecolor{ink}{HTML}{12161C}
 \definecolor{muted}{HTML}{5B6673}
 \definecolor{brand}{HTML}{0EA5E9}
 \definecolor{branddark}{HTML}{0369A1}
-\definecolor{brandsoft}{HTML}{E8F6FE}
-\definecolor{codebg}{HTML}{F4F7F9}
+\definecolor{brandsoft}{HTML}{F0F9FF}
+\definecolor{codebg}{HTML}{F8FAFC}
+\definecolor{bordercolor}{HTML}{E2E8F0}
 
-\setkomafont{title}{\bfseries\fontsize{22}{26}\selectfont\color{ink}}
+% Header & Footer Styling
+\clearpairofpagestyles
+\ihead{\small\color{muted}\sffamily CityTrace --- Rapport de mini-projet}
+\ohead{\small\color{muted}\sffamily Yassir Hannaoui}
+\ofoot{\small\color{muted}\sffamily Page \thepage}
+\setkomafont{headsepline}{\color{bordercolor}}
+\setkomafont{footsepline}{\color{bordercolor}}
+
+% Typography & KOMA Font Settings
+\setkomafont{title}{\bfseries\fontsize{26}{30}\selectfont\color{ink}}
 \setkomafont{subtitle}{\large\mdseries\color{muted}}
-\setkomafont{author}{\color{muted}}
-\setkomafont{date}{\color{muted}}
+\setkomafont{author}{\color{muted}\small}
+\setkomafont{date}{\color{muted}\small}
 \setkomafont{section}{\bfseries\Large\color{branddark}}
 \setkomafont{subsection}{\bfseries\large\color{ink}}
 \setkomafont{caption}{\small\upshape\color{muted}}
 \setkomafont{captionlabel}{\bfseries\upshape\color{branddark}}
 
-\RedeclareSectionCommand[beforeskip=1.4em,afterskip=0.55em]{section}
-\RedeclareSectionCommand[beforeskip=0.9em,afterskip=0.35em]{subsection}
+\RedeclareSectionCommand[beforeskip=1.8em,afterskip=0.6em]{section}
+\RedeclareSectionCommand[beforeskip=1.2em,afterskip=0.4em]{subsection}
 
 \setlength{\parindent}{0pt}
 \setlength{\emergencystretch}{3em}
-\setstretch{1.08}
-\renewcommand{\arraystretch}{1.12}
+\setstretch{1.12}
+\renewcommand{\arraystretch}{1.25}
 \graphicspath{{../screenshots/}}
 \urlstyle{same}
 \addto\captionsfrench{\renewcommand{\tablename}{Tableau}}
 
+% Styled Blockquote Container
+\tcbuselibrary{skins,breakable}
+\tcolorboxenvironment{quote}{
+  enhanced,
+  boxrule=0.5pt,
+  colframe=brand!40,
+  colback=brandsoft,
+  arc=4pt,
+  left=12pt, right=12pt, top=8pt, bottom=8pt,
+  leftrule=3.5pt
+}
+
+% Code Listing Styling
 \lstset{
   basicstyle=\ttfamily\footnotesize\color{ink},
   backgroundcolor=\color{codebg},
-  frame=none,
-  xleftmargin=0.8em,
-  xrightmargin=0.8em,
+  frame=single,
+  rulecolor=\color{bordercolor},
+  framerule=0.6pt,
+  framesep=8pt,
+  xleftmargin=2pt,
+  xrightmargin=2pt,
   breaklines=true,
   columns=fullflexible,
   keepspaces=true,
   showstringspaces=false,
-  aboveskip=0.7em,
-  belowskip=0.7em,
+  aboveskip=1em,
+  belowskip=1em,
   keywordstyle=\bfseries\color{branddark},
   commentstyle=\itshape\color{muted},
-  morekeywords={revert,emit,uint8,Status,internal,pure,returns},
+  stringstyle=\color{brand},
+  morekeywords={revert,emit,uint8,Status,internal,pure,returns,function,if,return,bool},
 }
 
+% Hyperref Configuration
 \hypersetup{
   colorlinks=true,
   linkcolor=branddark,
@@ -76,21 +109,19 @@
 
 \title{CityTrace}
 \subtitle{Registre de signalements urbains --- rapport de mini-projet}
-\author{Yassi}
+\author{Yassir Hannaoui}
 \date{Novembre 2026}
 
 \begin{document}
 
 \maketitle
-\noindent{\color{brand}\rule{\dimexpr\textwidth-11pt\relax}{0.6pt}}%
+\noindent{\color{brand}\rule{\textwidth}{0.8pt}}%
 
 \vspace{0.4em}
 
 \begin{quote}
 \small\color{muted}
-Une déclaration urbaine n'intéresse personne tant qu'elle n'a pas de suite.
-CityTrace donne à chaque signalement une fiche, une équipe et une chaîne de cinq
-statuts. Tout le reste est du bruit.
+    \url{https://github.com/MadMax-5000/blockchain}
 \end{quote}
 
 \section{Le point de départ}
@@ -155,7 +186,7 @@ sans aucune étape municipale prématurée.
 la date et la priorité ; le statut initial, lui, n'est pas un champ du formulaire.}
 \end{figure}
 
-Pour une campagne municipale, ce formulaire serait ridicule. L'import Excel lit
+Pour une campagne municipale, ce formulaire serait ridiculous. L'import Excel lit
 le classeur dans le navigateur avec SheetJS, puis contrôle les neuf colonnes
 attendues, les dates, les énumérations, les doublons du fichier et ceux déjà
 présents on-chain. Les lignes fautives sont signalées et ne peuvent pas être
