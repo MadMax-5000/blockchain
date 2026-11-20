@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 6.7%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 9%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 198 93% 60%;
+    --primary-foreground: 199 90% 7%;
+    --secondary: 0 0% 11%;
+    --secondary-foreground: 0 0% 96%;
+    --muted: 0 0% 11%;
+    --muted-foreground: 220 4% 68%;
+    --accent: 198 93% 60%;
+    --accent-foreground: 199 90% 7%;
+    --destructive: 345 83% 65%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 11%;
+    --input: 0 0% 19%;
+    --ring: 198 93% 60%;
+    --radius: 0.5rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-variant-numeric: tabular-nums;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-sans tracking-[-0.01em];
+  }
+
+  ::selection {
+    background: hsl(var(--primary) / 0.28);
+    color: hsl(var(--foreground));
+  }
+
+  *:focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .page-shell {
+    @apply mx-auto w-full max-w-[1280px] px-5 sm:px-6 lg:px-8;
+  }
+
+  .panel {
+    @apply rounded-lg bg-card;
+  }
+
+  .selection-line {
+    @apply after:absolute after:bottom-[-1px] after:left-0 after:h-px after:w-full after:bg-primary;
+  }
+
+  .mono {
+    @apply font-mono text-[13px] tracking-tight;
+  }
+
+  .meta {
+    @apply text-[13px] text-muted-foreground;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

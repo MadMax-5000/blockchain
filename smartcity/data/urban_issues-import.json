@@ -1,0 +1,90 @@
+[
+  {
+    "issueId": "CITY-2026-101",
+    "issueType": "StreetLight",
+    "location": "Rue de Toulouse, Rabat",
+    "description": "Lampadaire clignotant en face de la pharmacie",
+    "reportDate": "2026-11-20",
+    "priority": "High",
+    "reportedBy": "Citizen101",
+    "assignedTo": "",
+    "status": "Reported"
+  },
+  {
+    "issueId": "CITY-2026-102",
+    "issueType": "Road",
+    "location": "Avenue des Nations Unies, Rabat",
+    "description": "Marquage au sol effacé sur le passage piéton",
+    "reportDate": "2026-11-20",
+    "priority": "Medium",
+    "reportedBy": "Citizen102",
+    "assignedTo": "",
+    "status": "Reported"
+  },
+  {
+    "issueId": "CITY-2026-103",
+    "issueType": "Waste",
+    "location": "Quai des Oranges, Salé",
+    "description": "Conteneur manquant sur le quai nord",
+    "reportDate": "2026-11-20",
+    "priority": "Low",
+    "reportedBy": "Citizen103",
+    "assignedTo": "",
+    "status": "Reported"
+  },
+  {
+    "issueId": "CITY-2026-104",
+    "issueType": "Water",
+    "location": "Rue de Fès, Rabat",
+    "description": "Eau stagnante après la pluie",
+    "reportDate": "2026-11-20",
+    "priority": "High",
+    "reportedBy": "Citizen104",
+    "assignedTo": "",
+    "status": "Reported"
+  },
+  {
+    "issueId": "CITY-2026-105",
+    "issueType": "Park",
+    "location": "Parc de la Bouknadel, Salé",
+    "description": "Fontaine d'eau potable hors service",
+    "reportDate": "2026-11-20",
+    "priority": "Medium",
+    "reportedBy": "Citizen105",
+    "assignedTo": "",
+    "status": "Reported"
+  },
+  {
+    "issueId": "CITY-2026-106",
+    "issueType": "Traffic",
+    "location": "Boulevard Ar-Ribat, Rabat",
+    "description": "Panneau de limitation de vitesse masqué par un arbre",
+    "reportDate": "2026-11-20",
+    "priority": "High",
+    "reportedBy": "Citizen106",
+    "assignedTo": "",
+    "status": "Reported"
+  },
+  {
+    "issueId": "CITY-2026-107",
+    "issueType": "StreetLight",
+    "location": "Avenue de l'Aéroport, Rabat",
+    "description": "Pot d'éclairage incliné après le vent",
+    "reportDate": "2026-11-20",
+    "priority": "Critical",
+    "reportedBy": "Citizen107",
+    "assignedTo": "",
+    "status": "Reported"
+  },
+  {
+    "issueId": "CITY-2026-108",
+    "issueType": "Road",
+    "location": "Rue de Marrakech, Salé",
+    "description": "Trottoir fissuré devant l'école",
+    "reportDate": "2026-11-20",
+    "priority": "Medium",
+    "reportedBy": "Citizen108",
+    "assignedTo": "",
+    "status": "Reported"
+  }
+]

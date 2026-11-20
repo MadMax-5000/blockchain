@@ -1,0 +1,90 @@
+[
+  {
+    "issueId": "CITY-2026-001",
+    "issueType": "StreetLight",
+    "location": "Avenue Mohammed V, Rabat",
+    "description": "Lampadaire hors service devant le numéro 14",
+    "reportDate": "2026-11-12",
+    "priority": "High",
+    "reportedBy": "Citizen01",
+    "assignedTo": "",
+    "status": "Reported"
+  },
+  {
+    "issueId": "CITY-2026-002",
+    "issueType": "Road",
+    "location": "Boulevard Hassan II, Rabat",
+    "description": "Nid-de-poule dangereux sur la voie de droite",
+    "reportDate": "2026-11-13",
+    "priority": "Critical",
+    "reportedBy": "Citizen02",
+    "assignedTo": "UrbanTeam01",
+    "status": "Assigned"
+  },
+  {
+    "issueId": "CITY-2026-003",
+    "issueType": "Waste",
+    "location": "Place du Marché, Salé",
+    "description": "Bacs de tri pleins depuis trois jours",
+    "reportDate": "2026-11-14",
+    "priority": "Medium",
+    "reportedBy": "Citizen03",
+    "assignedTo": "UrbanTeam02",
+    "status": "InProgress"
+  },
+  {
+    "issueId": "CITY-2026-004",
+    "issueType": "Water",
+    "location": "Rue des Lilas, Rabat",
+    "description": "Fuite d'eau au niveau du regard n° 7",
+    "reportDate": "2026-11-15",
+    "priority": "High",
+    "reportedBy": "Citizen04",
+    "assignedTo": "UrbanTeam03",
+    "status": "Resolved"
+  },
+  {
+    "issueId": "CITY-2026-005",
+    "issueType": "StreetLight",
+    "location": "Avenue de la Liberté, Témara",
+    "description": "Rangez de lampadaires éteints sur 200 mètres",
+    "reportDate": "2026-11-16",
+    "priority": "Critical",
+    "reportedBy": "Citizen05",
+    "assignedTo": "UrbanTeam01",
+    "status": "Closed"
+  },
+  {
+    "issueId": "CITY-2026-006",
+    "issueType": "Park",
+    "location": "Jardin public, Rabat",
+    "description": "Banc cassé près de l'entrée principale",
+    "reportDate": "2026-11-17",
+    "priority": "Low",
+    "reportedBy": "Citizen06",
+    "assignedTo": "",
+    "status": "Reported"
+  },
+  {
+    "issueId": "CITY-2026-007",
+    "issueType": "Traffic",
+    "location": "Carrefour Moulay Abdellah, Salé",
+    "description": "Feu piéton resté éteint au passage",
+    "reportDate": "2026-11-18",
+    "priority": "High",
+    "reportedBy": "Citizen07",
+    "assignedTo": "UrbanTeam04",
+    "status": "Assigned"
+  },
+  {
+    "issueId": "CITY-2026-008",
+    "issueType": "Waste",
+    "location": "Corniche de Rabat",
+    "description": "Dépôt sauvage de cartons derrière le kiosque",
+    "reportDate": "2026-11-19",
+    "priority": "Medium",
+    "reportedBy": "Citizen08",
+    "assignedTo": "UrbanTeam02",
+    "status": "InProgress"
+  }
+]

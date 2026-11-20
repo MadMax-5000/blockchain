@@ -1,0 +1,13 @@
+# Build outputs
+frontend/dist/
+frontend/.vite/
+
+# Local environment
+.env
+contracts/.env
+frontend/.env
+
+# Hardhat artifacts are regenerated on compile
+artifacts/
+cache/
+typechain-types/
