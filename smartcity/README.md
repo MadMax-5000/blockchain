@@ -44,7 +44,7 @@ smartcity/
 │   └── urban_issues-import.xlsx     8 lignes valides, identifiants 101–108
 ├── docs/
 │   ├── demo-script.md               scénario de démonstration 7–8 min
-│   └── screenshots/                 captures desktop, tablette et mobile
+│   └── screenshots/                 captures utilisées dans le rapport
 └── package.json                     npm workspaces
 ```
 
@@ -235,14 +235,9 @@ local de référence, sans donnée simulée :
 
 | Fichier | Écran |
 |---|---|
-| [`docs/screenshots/01-tableau-de-bord.jpg`](docs/screenshots/01-tableau-de-bord.jpg) | tableau de bord, 8 signalements |
-| [`docs/screenshots/02-nouveau-signalement.jpg`](docs/screenshots/02-nouveau-signalement.jpg) | déclaration citoyenne |
-| [`docs/screenshots/03-liste-signalements.jpg`](docs/screenshots/03-liste-signalements.jpg) | liste et filtres |
-| [`docs/screenshots/04-detail-historique.jpg`](docs/screenshots/04-detail-historique.jpg) | fiche `CITY-2026-005`, 5 entrées d'historique |
-| [`docs/screenshots/05-espace-municipal.jpg`](docs/screenshots/05-espace-municipal.jpg) | gestion agent |
-| [`docs/screenshots/06-import-excel.jpg`](docs/screenshots/06-import-excel.jpg) | import Excel |
-| [`docs/screenshots/07-tablette.jpg`](docs/screenshots/07-tablette.jpg) | tablette 768 px |
-| [`docs/screenshots/08-mobile.jpg`](docs/screenshots/08-mobile.jpg) | mobile 390 px |
+| [`docs/screenshots/Registre des signalements.png`](docs/screenshots/Registre%20des%20signalements.png) | tableau de bord, compteurs et répartition par statut |
+| [`docs/screenshots/nouveau-signalement.png`](docs/screenshots/nouveau-signalement.png) | déclaration citoyenne |
+| [`docs/screenshots/Signalements.png`](docs/screenshots/Signalements.png) | liste publique et filtres |
 
 ---
 

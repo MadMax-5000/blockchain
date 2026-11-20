@@ -1,0 +1,254 @@
+\documentclass[11pt,a4paper,parskip=half]{scrartcl}
+
+\usepackage{fontspec}
+\usepackage[french]{babel}
+\usepackage{microtype}
+\usepackage[table]{xcolor}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{listings}
+\usepackage{hyperref}
+
+\setmainfont{Inter}[
+  Path           = fonts/,
+  Extension      = .ttf,
+  UprightFont    = *-Regular,
+  BoldFont       = *-Bold,
+  ItalicFont     = *-Regular,
+  BoldItalicFont = *-Bold,
+]
+
+\DeclareFontShape{TU}{Inter(0)}{b}{sc}{<-> ssub*Inter(0)/b/n}{}
+
+\definecolor{ink}{HTML}{12161C}
+\definecolor{muted}{HTML}{5B6673}
+\definecolor{brand}{HTML}{0EA5E9}
+\definecolor{branddark}{HTML}{0369A1}
+\definecolor{brandsoft}{HTML}{E8F6FE}
+\definecolor{codebg}{HTML}{F4F7F9}
+
+\setkomafont{title}{\bfseries\fontsize{22}{26}\selectfont\color{ink}}
+\setkomafont{subtitle}{\large\mdseries\color{muted}}
+\setkomafont{author}{\color{muted}}
+\setkomafont{date}{\color{muted}}
+\setkomafont{section}{\bfseries\Large\color{branddark}}
+\setkomafont{subsection}{\bfseries\large\color{ink}}
+\setkomafont{caption}{\small\upshape\color{muted}}
+\setkomafont{captionlabel}{\bfseries\upshape\color{branddark}}
+
+\RedeclareSectionCommand[beforeskip=1.4em,afterskip=0.55em]{section}
+\RedeclareSectionCommand[beforeskip=0.9em,afterskip=0.35em]{subsection}
+
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{3em}
+\setstretch{1.08}
+\renewcommand{\arraystretch}{1.12}
+\graphicspath{{../screenshots/}}
+\urlstyle{same}
+\addto\captionsfrench{\renewcommand{\tablename}{Tableau}}
+
+\lstset{
+  basicstyle=\ttfamily\footnotesize\color{ink},
+  backgroundcolor=\color{codebg},
+  frame=none,
+  xleftmargin=0.8em,
+  xrightmargin=0.8em,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false,
+  aboveskip=0.7em,
+  belowskip=0.7em,
+  keywordstyle=\bfseries\color{branddark},
+  commentstyle=\itshape\color{muted},
+  morekeywords={revert,emit,uint8,Status,internal,pure,returns},
+}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=branddark,
+  urlcolor=branddark,
+  pdftitle={CityTrace --- Registre de signalements urbains},
+  pdfauthor={Yassir Hannaoui},
+}
+
+\title{CityTrace}
+\subtitle{Registre de signalements urbains --- rapport de mini-projet}
+\author{Yassi}
+\date{Novembre 2026}
+
+\begin{document}
+
+\maketitle
+\noindent{\color{brand}\rule{\dimexpr\textwidth-11pt\relax}{0.6pt}}%
+
+\vspace{0.4em}
+
+\begin{quote}
+\small\color{muted}
+Une déclaration urbaine n'intéresse personne tant qu'elle n'a pas de suite.
+CityTrace donne à chaque signalement une fiche, une équipe et une chaîne de cinq
+statuts. Tout le reste est du bruit.
+\end{quote}
+
+\section{Le point de départ}
+
+Un lampadaire qui clignote, un trottoir effondré, une poubelle pleine : le
+signalement part souvent d'un message envoyé nulle part, puis d'une relance par
+téléphone. J'ai voulu une trace unique, du premier dépôt jusqu'à la clôture, que
+le citoyen et la municipalité puissent lire sans se faire confiance. Elle tient
+dans un seul contrat Solidity, \texttt{UrbanIssueRegistry}. L'interface React ne
+stocke rien : elle lit le contrat et signe les écritures avec MetaMask.
+
+Chaque fiche porte neuf champs : identifiant, type, lieu, description, date,
+priorité, déclarant, équipe affectée et statut. Les huit dossiers du jeu de
+démonstration utilisent des pseudonymes (\texttt{Citizen01},
+\texttt{UrbanTeam01}) et des quartiers fictifs. Aucune donnée personnelle réelle
+n'entre dans le contrat.
+
+\section{Une chaîne, pas un bouton \og{}terminé\fg{}}
+
+Le statut n'est pas un champ libre. Il avance d'une case à la fois :
+\texttt{Signalé} $\to$ \texttt{Affecté} $\to$ \texttt{En cours} $\to$
+\texttt{Résolu} $\to$ \texttt{Clôturé}. \texttt{assignTeam} est la porte d'entrée
+dans \texttt{Affecté} : elle écrit l'équipe et l'historique dans la même
+transaction. Ensuite, \texttt{updateStatus} vérifie la transition dans le
+contrat, pas dans le React.
+
+\begin{lstlisting}
+function _isValidTransition(Status from, Status to) internal pure returns (bool) {
+    if (from == Status.Reported)   return to == Status.Assigned;
+    if (from == Status.Assigned)   return to == Status.InProgress;
+    if (from == Status.InProgress) return to == Status.Resolved;
+    if (from == Status.Resolved)   return to == Status.Closed;
+    return false;
+}
+\end{lstlisting}
+
+Un appel direct qui demanderait \texttt{Resolved} depuis \texttt{InProgress} est
+donc rejeté avec \texttt{InvalidStatusTransition}. Le bouton
+\og{}Passer à\ldots{}\fg{} de l'espace municipal ne propose que l'étape suivante ;
+c'est un confort d'interface, la règle est celle ci-dessus. Une équipe ne peut
+plus être changée après \texttt{Résolu}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{Registre des signalements}
+\caption{L'accueil. Les compteurs viennent de la lecture des fiches et la
+colonne de droite montre la répartition par statut.}
+\end{figure}
+
+\section{Deux portes d'entrée}
+
+Le formulaire citoyen est volontairement court. Il ne décide que du contenu de
+la fiche : le contrat impose \texttt{Reported} au moment de la création. La
+transaction est signée dans MetaMask, le frontend attend le reçu, puis il
+invalide son cache de lecture. Le dossier apparaît ensuite en tête de liste,
+sans aucune étape municipale prématurée.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{nouveau-signalement}
+\caption{Le formulaire de déclaration. Le déclarant choisit le type, le lieu,
+la date et la priorité ; le statut initial, lui, n'est pas un champ du formulaire.}
+\end{figure}
+
+Pour une campagne municipale, ce formulaire serait ridicule. L'import Excel lit
+le classeur dans le navigateur avec SheetJS, puis contrôle les neuf colonnes
+attendues, les dates, les énumérations, les doublons du fichier et ceux déjà
+présents on-chain. Les lignes fautives sont signalées et ne peuvent pas être
+cochées. Un lot est limité à 50~lignes et demande \texttt{AGENT\_ROLE}.
+\texttt{batchCreateIssues} est atomique : un seul identifiant déjà utilisé
+annule tout le lot. Deux classeurs accompagnent la démo, l'un avec 8~lignes
+propres, l'autre avec 10~lignes dont 5~erreurs volontaires.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{Signalements}
+\caption{La liste publique. Filtres par statut et recherche textuelle fonctionnent
+sans wallet connecté ; seules les actions d'agent demandent une signature.}
+\end{figure}
+
+\section{Le wallet ne sert qu'à signer}
+
+Les routes \texttt{/}, \texttt{/issues} et \texttt{/issues/:issueId} passent par
+le RPC local : la consultation est ouverte. Dès qu'une écriture est demandée ---
+affectation, changement de statut, import, pause --- MetaMask signe avec le
+compte municipal. Sur le nœud de référence, le déployeur est le compte~\#0 de
+Hardhat, \texttt{0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266}. Le constructeur
+lui donne les deux rôles suivants.
+
+\begin{table}[htbp]
+\centering
+\caption{Deux rôles suffisent pour la démonstration.}
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+\rowcolor{brandsoft}
+\textbf{Rôle} & \textbf{Ce qu'il autorise} \\
+\midrule
+\texttt{AGENT\_ROLE} & affecter une équipe, avancer le statut, importer un lot \\
+\texttt{DEFAULT\_ADMIN\_ROLE} & mettre en pause, reprendre, accorder ou retirer un rôle \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Les erreurs du contrat sont traduites dans l'interface : doublon, rôle manquant,
+mauvais réseau, transition interdite, contrat en pause, lot trop grand. Le hash
+de transaction est affiché avec un bouton de copie. Sur une chaîne publique, un
+lien vers l'explorateur serait ajouté ; sur le réseau local je n'en fabrique pas.
+
+\section{Ce que j'ai vérifié}
+
+Le déploiement de référence tourne sur Hardhat local, chainId~31337. Le registre
+est au bloc~1, à l'adresse
+\texttt{0x5FbDB2315678afecb367f032d93F642f64180aa3}. La clé privée du compte~\#0
+est celle fournie par Hardhat ; elle ne sert qu'à cette démo et n'apparaît
+nulle part dans le frontend.
+
+\begin{table}[htbp]
+\centering
+\caption{Relevés sur le nœud local de référence.}
+\begin{tabularx}{\textwidth}{@{}lXl@{}}
+\toprule
+\rowcolor{brandsoft}
+\textbf{Commande} & \textbf{Contrôle} & \textbf{Résultat} \\
+\midrule
+\texttt{npm test} & rôles, doublons, transitions, lots, pause, événements & \textbf{31 passing} \\
+\texttt{smoke:local} & comptages et historique de \texttt{CITY-2026-005} & 8 dossiers, 5 entrées \\
+\texttt{typecheck} & \texttt{tsc --noEmit} & aucune erreur \\
+\texttt{build} & compilation Vite de production & OK \\
+inspecteur & 1440 / 768 / 390~px & 0~FAIL \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Les 8~signalements créés par le script \texttt{seed.ts} produisent
+8~\texttt{IssueCreated}, 6~\texttt{IssueAssigned} et
+13~\texttt{IssueStatusUpdated}. Le dossier \texttt{CITY-2026-005} est clos et
+porte cinq entrées d'historique horodatées. Le build de production a aussi été
+ouvert dans un navigateur aux trois largeurs : aucun débordement ni avertissement
+de mise en page.
+
+\section{Limites assumées}
+
+Je n'ai pas déployé sur Sepolia. Une adresse publique sans faucet ni exploration
+réelle n'aurait rien apporté à la démonstration, et j'ai préféré garder un
+environnement reproductible. Le contrat n'a pas subi Slither ni fuzzing Foundry :
+les 31~tests couvrent les règles métier, pas une revue de sécurité professionnelle.
+
+Les pseudonymes évitent de stocker des identités, mais ils rendent le registre
+inutilisable pour une vraie réclamation nominative. Enfin, \texttt{getIssueIds}
+est plafonné à 100~identifiants par appel ; le frontend charge les 500~premiers
+dossiers, largement au-dessus du jeu de démonstration.
+
+La séquence de démarrage est dans \path{smartcity/README.md}, le scénario de
+soutenance dans \path{smartcity/docs/demo-script.md} et les captures dans
+\path{smartcity/docs/screenshots}.
+
+\medskip
+{\footnotesize\color{muted} Typographie : Inter, SIL Open Font License. Les
+fichiers de police sont fournis dans \path{docs/latex/fonts}.}
+
+\end{document}

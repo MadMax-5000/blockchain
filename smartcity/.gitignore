@@ -11,3 +11,8 @@ frontend/.env
 artifacts/
 cache/
 typechain-types/
+
+# LaTeX build files (the PDF is kept)
+docs/latex/*.aux
+docs/latex/*.log
+docs/latex/*.out
