@@ -110,8 +110,9 @@ export function ExcelImport() {
   const rows: EffectiveRow[] = useMemo(() => {
     return (parse?.rows ?? []).map((row) => {
       const onChainDuplicate = duplicateQuery.data?.get(row.rowNumber) ?? false;
-      const errors = [...row.errors];
-      if (onChainDuplicate) errors.push("Identifiant déjà enregistré on-chain.");
+      const errors = onChainDuplicate
+        ? ["Identifiant déjà enregistré on-chain.", ...row.errors]
+        : [...row.errors];
       if (!row.recipientAddress && !account) {
         errors.push("Adresse destinataire absente (aucun wallet connecté pour servir de défaut).");
       }
@@ -229,12 +230,20 @@ export function ExcelImport() {
                 .xlsx, .xls ou .csv — parsing 100 % côté client avec SheetJS. Rien n'est envoyé à un serveur.
               </CardDescription>
             </div>
-            <Button asChild variant="outline" size="sm">
-              <a href="/etudiants.xlsx" download>
-                <Download className="h-3.5 w-3.5" />
-                Fichier d'exemple
-              </a>
-            </Button>
+            <div className="flex flex-wrap gap-2">
+              <Button asChild variant="outline" size="sm">
+                <a href="/etudiants.xlsx" download>
+                  <Download className="h-3.5 w-3.5" />
+                  Fichier d'exemple
+                </a>
+              </Button>
+              <Button asChild size="sm">
+                <a href="/etudiants-import.xlsx" download>
+                  <Download className="h-3.5 w-3.5" />
+                  Démo (nouveaux ID)
+                </a>
+              </Button>
+            </div>
           </div>
         </CardHeader>
         <CardContent>
@@ -283,7 +292,7 @@ export function ExcelImport() {
             <p className="mt-1 text-[12px] text-muted-foreground">
               {parse
                 ? `${parse.rows.length} ligne(s) · feuille « ${parse.sheetName} »`
-                : "Colonnes attendues : studentName, studentId, diplomaTitle, issueDate, recipientAddress, grade"}
+                : "Colonnes attendues : studentName, studentId, issueDate, recipientAddress, grade"}
             </p>
             {parse ? (
               <Button
@@ -318,6 +327,7 @@ export function ExcelImport() {
               <AlertDescription>{parseError}</AlertDescription>
             </Alert>
           ) : null}
+
         </CardContent>
       </Card>
 
@@ -359,7 +369,6 @@ export function ExcelImport() {
                     <TableHead className="w-12">#</TableHead>
                     <TableHead>Étudiant</TableHead>
                     <TableHead>Identifiant</TableHead>
-                    <TableHead>Diplôme</TableHead>
                     <TableHead>Date</TableHead>
                     <TableHead>Destinataire</TableHead>
                     <TableHead>Statut</TableHead>
@@ -389,7 +398,6 @@ export function ExcelImport() {
                         <TableCell className="whitespace-nowrap font-mono text-[11.5px]">
                           {row.studentId || "—"}
                         </TableCell>
-                        <TableCell className="min-w-[180px] text-[13px]">{row.diplomaTitle || "—"}</TableCell>
                         <TableCell className="whitespace-nowrap font-mono text-[11.5px]">
                           {row.issueDate || "—"}
                         </TableCell>
@@ -415,12 +423,16 @@ export function ExcelImport() {
                               title={row.errors.join(" ")}
                             >
                               <XCircle className="h-3 w-3" />
-                              {row.onChainDuplicate ? "doublon" : "erreur"}
+                              {row.onChainDuplicate
+                                ? "déjà émis"
+                                : row.errors.some((error) => error.startsWith("Doublon dans le fichier"))
+                                  ? "doublon"
+                                  : "erreur"}
                             </Badge>
                           )}
                           {row.errors.length > 0 ? (
                             <p className="mt-1 max-w-[220px] text-[10.5px] leading-tight text-red-400/80">
-                              {row.errors[0]}
+                              {row.errors.join(" ")}
                             </p>
                           ) : null}
                         </TableCell>

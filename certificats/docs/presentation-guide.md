@@ -27,7 +27,8 @@ passer de `v1 · registre` à `v2 · erc-721`.
 |---|---|---|---|
 | Nœud Hardhat | `contracts/` | Une blockchain locale sur `127.0.0.1:8545`, chainId `31337`. Elle donne 20 comptes de test avec de l'ETH gratuit. | `npm run node` (terminal 1) |
 | Contrats | `contracts/contracts/` | `CertificateRegistry.sol` (Devoir 1) et `CertificateNFT.sol` (Devoir 2). Ce sont les deux programmes déployés on-chain. | `npm run deploy:local` (terminal 2) |
-| Données d'exemple | `data/etudiants.xlsx` | 8 lignes d'étudiants, avec un doublon volontaire sur `2023-INF-042` pour montrer la validation. | téléchargeable depuis l'accueil |
+| Données d'exemple | `data/etudiants.xlsx` | 8 lignes, dont 7 déjà émises par le seed et un doublon sur `2023-INF-042`. Sert à montrer les refus. | bouton « Fichier d'exemple » |
+| Données de démo | `data/etudiants-import.xlsx` | 5 lignes : 4 identifiants neufs (`2026-DEMO-001` à `004`) + 1 doublon dans le fichier. Sert à émettre devant le prof. | bouton « Démo (nouveaux ID) » |
 | Frontend | `frontend/` | React + Vite + shadcn/ui. Trois écrans utiles : accueil, admin, vérification. Plus la page audit. | `npm run dev` (terminal 3) |
 | Rapports | `docs/latex/` | Les deux rapports de devoir en PDF, plus le rapport d'audit en Markdown. | déjà compilés |
 
@@ -58,7 +59,8 @@ De droite à gauche :
 
 Trois compteurs : nombre de certificats, réseau actif, contrats déployés. Ensuite
 les adresses des deux contrats, les deux cartes de présentation des versions, et
-un lien pour télécharger `etudiants.xlsx`.
+un lien pour télécharger `etudiants.xlsx`. Le bouton d'import propose aussi un second
+fichier, `etudiants-import.xlsx`, avec des identifiants pas encore émis.
 
 Phrase à dire : « L'accueil sert à montrer qu'il y a bien deux contrats déployés
 et que le frontend lit leurs compteurs en direct, sans valeur codée en dur. »
@@ -169,13 +171,18 @@ apparaît. Montre-la si besoin : elle affiche l'adresse connectée et l'owner.
 
 ### Scénario 4 — import Excel
 
-1. Sur l'accueil, télécharge `etudiants.xlsx`.
-2. **Admin → Import Excel** → dépose le fichier.
-3. Montre l'aperçu : 8 lignes, dont une en rouge avec le doublon `2023-INF-042` et
-   une autre marquée « déjà enregistré on-chain » puisque le seed l'a émis.
-4. Décoche la ligne en erreur.
-5. Choisis **Une transaction batch**, puis **Émettre**.
-6. Signe et montre le hash du lot.
+1. **Admin → Import Excel** → clique **« Démo (nouveaux ID) »** pour télécharger
+   `etudiants-import.xlsx`, puis dépose-le.
+2. Montre l'aperçu : 5 lignes. Les 4 premières sont « prêt ». La dernière est
+   marquée « doublon » avec « Doublon dans le fichier : identifiant déjà utilisé
+   ligne 2. » — c'est le cas volontaire.
+   - N'utilise **pas** `etudiants.xlsx` pour cette démo : ses 7 identifiants sont
+     déjà émis par `seed:local`, donc toutes les lignes sont marquées
+     « déjà émis ». Ce fichier sert uniquement à montrer le refus.
+3. Décoche la ligne en doublon.
+4. Choisis **Une transaction batch**, puis **Émettre**.
+5. Signe et montre le hash du lot. Montre ensuite que `2026-DEMO-001` se retrouve
+   dans **Vérifier**.
 
 > « SheetJS lit le fichier dans le navigateur : aucune donnée d'étudiant n'est
 > envoyée à un serveur. Je vois les erreurs avant de signer. Le contrat refuse
@@ -316,3 +323,5 @@ accès refusé, doublon, lot invalide, pause, révocation double, reentrancy.
 - **Page blanche** : relance `npm run dev` et vide le cache du navigateur.
 - **Transaction en attente** : sur un nœud Hardhat éteint puis relancé, les hashes
   anciens n'existent plus. Redéploie et réémet le seed.
+- **Toutes les lignes marquées « déjà émis »** : c'est le fichier `etudiants.xlsx`
+  après `seed:local`. Utilise `etudiants-import.xlsx` pour une émission en direct.

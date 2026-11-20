@@ -21,7 +21,9 @@ certificats/
 │   └── src/                   shadcn/ui, wagmi/viem, SheetJS
 ├── data/
 │   ├── etudiants.json         source des données d'exemple
-│   └── etudiants.xlsx         fichier d'import d'exemple
+│   ├── etudiants.xlsx         8 lignes (déjà émises par le seed + 1 doublon)
+│   ├── etudiants-import.json  source du fichier de démo
+│   └── etudiants-import.xlsx  5 lignes dont 4 identifiants neufs (démo en direct)
 ├── docs/
 │   ├── devoir1.md             choix de conception du registre
 │   ├── audit-report.md        rapport d'audit du Devoir 2
@@ -131,8 +133,16 @@ Colonnes attendues dans la première feuille (les alias français sont acceptés
 | `recipientAddress` | 0x7099…79C8 | non (défaut : wallet connecté) |
 | `grade` | Mention Bien | non |
 
-Le fichier `data/etudiants.xlsx` (téléchargeable depuis l'accueil) contient 8 lignes,
-dont une **duplicate volontaire** de `2023-INF-042` pour démontrer la validation.
+Le fichier `data/etudiants.xlsx` contient 8 lignes, dont une **duplicate volontaire**
+de `2023-INF-042` pour démontrer la validation. Ses 7 identifiants sont déjà émis par
+`seed:local` : toutes les lignes sont donc marquées « déjà émis » après le seed.
+
+Pour une émission en direct, utilise `data/etudiants-import.xlsx` (bouton
+« Démo (nouveaux ID) » dans l'écran d'import) : 4 identifiants `2026-DEMO-00x` neufs
+et un doublon volontaire dans le fichier.
+
+La colonne diplôme est optionnelle et n'apparaît plus dans l'aperçu d'import. Si
+elle est absente, le frontend envoie « Diplôme académique » au contrat.
 
 Validation côté client avant toute transaction :
 
@@ -238,7 +248,7 @@ Depuis `certificats/` :
 | `npm run node` | nœud Hardhat local |
 | `npm run deploy:local` | déploie v1 + v2, exporte ABI et adresses |
 | `npm run seed:local` | émet les certificats d'exemple |
-| `npm run excel` | régénère `data/etudiants.xlsx` |
+| `npm run excel` | régénère les deux `.xlsx` et les copie dans `frontend/public/` |
 | `npm run export` | régénère `frontend/src/contracts/abis.ts` |
 | `npm run dev` | serveur Vite |
 | `npm run build` | typecheck + build de production |

@@ -11,12 +11,19 @@ const HEADER_ALIASES: Record<string, keyof ParsedRow | "recipientAddress"> = {
   studentid: "studentId",
   cne: "studentId",
   identifiant: "studentId",
+  identifiantetudiant: "studentId",
   matricule: "studentId",
   id: "studentId",
   diplomattitle: "diplomaTitle",
+  diploma: "diplomaTitle",
   diplome: "diplomaTitle",
-  titre: "diplomaTitle",
   intitule: "diplomaTitle",
+  intitulediplome: "diplomaTitle",
+  intituledudiplome: "diplomaTitle",
+  nomdiplome: "diplomaTitle",
+  diplomeobtenu: "diplomaTitle",
+  formation: "diplomaTitle",
+  titre: "diplomaTitle",
   issuedate: "issueDate",
   datedemission: "issueDate",
   dateemission: "issueDate",
@@ -113,7 +120,8 @@ export function parseCertificateWorkbook(buffer: ArrayBuffer, fileName: string):
 
   if (![...headerMap.values()].includes("studentName")) {
     throw new Error(
-      "Colonnes introuvables. Le fichier doit contenir au minimum studentName, studentId, diplomaTitle et issueDate.",
+      `Colonnes introuvables. En-têtes lus : ${Object.keys(rawRows[0] ?? {}).join(", ")}. ` +
+        "Le fichier doit contenir au minimum studentName, studentId, diplomaTitle et issueDate.",
     );
   }
 
@@ -144,7 +152,6 @@ export function parseCertificateWorkbook(buffer: ArrayBuffer, fileName: string):
 
     if (!record.studentName) errors.push("Nom de l'étudiant manquant.");
     if (!studentId) errors.push("Identifiant étudiant manquant.");
-    if (!record.diplomaTitle) errors.push("Intitulé du diplôme manquant.");
     if (!issueDate) errors.push("Date d'émission manquante.");
     else if (!isValidISODate(issueDate)) errors.push(`Date invalide « ${issueDate} » (format attendu : AAAA-MM-JJ).`);
     if (!address.valid) errors.push(`Adresse wallet invalide « ${record.recipientAddress} ».`);
@@ -162,7 +169,7 @@ export function parseCertificateWorkbook(buffer: ArrayBuffer, fileName: string):
       rowNumber: index + 2,
       studentName: record.studentName,
       studentId,
-      diplomaTitle: record.diplomaTitle,
+      diplomaTitle: record.diplomaTitle || "Diplôme académique",
       issueDate,
       recipientAddress: address.address,
       grade: record.grade,

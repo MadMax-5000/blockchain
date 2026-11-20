@@ -1,0 +1,42 @@
+[
+  {
+    "studentName": "Léa Martin",
+    "studentId": "2026-DEMO-001",
+    "diplomaTitle": "Licence Informatique",
+    "issueDate": "2026-11-20",
+    "recipientAddress": "0x71bE63f3384f5fb98995898A86B02Fb2426c5788",
+    "grade": "Mention Bien"
+  },
+  {
+    "studentName": "Adam Say",
+    "studentId": "2026-DEMO-002",
+    "diplomaTitle": "Master Data Science",
+    "issueDate": "2026-11-20",
+    "recipientAddress": "0xFABB0ac9d68B0B445fB7357272Ff202C5651694a",
+    "grade": "Mention Très Bien"
+  },
+  {
+    "studentName": "Sofia Amrani",
+    "studentId": "2026-DEMO-003",
+    "diplomaTitle": "Master Réseaux & Sécurité",
+    "issueDate": "2026-11-20",
+    "recipientAddress": "0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec",
+    "grade": "Mention Bien"
+  },
+  {
+    "studentName": "Noé Girard",
+    "studentId": "2026-DEMO-004",
+    "diplomaTitle": "Licence Génie Informatique",
+    "issueDate": "2026-11-20",
+    "recipientAddress": "0xdF3e18d64BC6A983f673Ab319CCaE4f1a57C7097",
+    "grade": "Mention Assez Bien"
+  },
+  {
+    "studentName": "Léa Martin (doublon volontaire)",
+    "studentId": "2026-DEMO-001",
+    "diplomaTitle": "Licence Informatique",
+    "issueDate": "2026-11-20",
+    "recipientAddress": "0xcd3B766CCDd6AE721141F452C550Ca635964ce71",
+    "grade": "Mention Bien"
+  }
+]
