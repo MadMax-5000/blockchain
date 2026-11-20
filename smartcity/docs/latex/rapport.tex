@@ -14,6 +14,7 @@
 \usepackage{scrlayer-scrpage}
 \usepackage{enumitem}
 \usepackage{needspace}
+\usepackage{tikz}
 
 \setmainfont{Inter}[
   Path           = fonts/,
@@ -29,9 +30,9 @@
 % --- Restrained visual identity ---
 \definecolor{ink}{HTML}{17212B}
 \definecolor{muted}{HTML}{667482}
-\definecolor{brand}{HTML}{0F9F95}
-\definecolor{branddark}{HTML}{087E78}
-\definecolor{brandsoft}{HTML}{EAF6F4}
+\definecolor{brand}{HTML}{C46A45}
+\definecolor{branddark}{HTML}{914A31}
+\definecolor{brandsoft}{HTML}{F8EEE9}
 \definecolor{codebg}{HTML}{F3F6F8}
 \definecolor{rulecolor}{HTML}{DCE4E8}
 \definecolor{paperwhite}{HTML}{FFFFFF}
@@ -128,13 +129,17 @@
 
 % Keep figures visually contained without changing their source images.
 \let\originalincludegraphics\includegraphics
+\newsavebox{\citytraceimagebox}
 \renewcommand{\includegraphics}[2][]{%
   \begingroup
-  \setlength{\fboxsep}{0pt}%
-  \setlength{\fboxrule}{0.4pt}%
-  \fcolorbox{rulecolor}{paperwhite}{%
-    \originalincludegraphics[#1]{#2}%
-  }%
+  \sbox{\citytraceimagebox}{\originalincludegraphics[#1]{#2}}%
+  \begin{tikzpicture}
+    \clip[rounded corners=9pt]
+      (0,0) rectangle
+      (\wd\citytraceimagebox,\dimexpr\ht\citytraceimagebox+\dp\citytraceimagebox\relax);
+    \node[anchor=south west,inner sep=0pt] at (0,0)
+      {\usebox{\citytraceimagebox}};
+  \end{tikzpicture}%
   \endgroup
 }
 
@@ -293,25 +298,5 @@ Les 8~signalements créés par le script \texttt{seed.ts} produisent
 porte cinq entrées d'historique horodatées. Le build de production a aussi été
 ouvert dans un navigateur aux trois largeurs : aucun débordement ni avertissement
 de mise en page.
-
-\section{Limites assumées}
-
-Je n'ai pas déployé sur Sepolia. Une adresse publique sans faucet ni exploration
-réelle n'aurait rien apporté à la démonstration, et j'ai préféré garder un
-environnement reproductible. Le contrat n'a pas subi Slither ni fuzzing Foundry :
-les 31~tests couvrent les règles métier, pas une revue de sécurité professionnelle.
-
-Les pseudonymes évitent de stocker des identités, mais ils rendent le registre
-inutilisable pour une vraie réclamation nominative. Enfin, \texttt{getIssueIds}
-est plafonné à 100~identifiants par appel ; le frontend charge les 500~premiers
-dossiers, largement au-dessus du jeu de démonstration.
-
-La séquence de démarrage est dans \path{smartcity/README.md}, le scénario de
-soutenance dans \path{smartcity/docs/demo-script.md} et les captures dans
-\path{smartcity/docs/screenshots}.
-
-\medskip
-{\footnotesize\color{muted} Typographie : Inter, SIL Open Font License. Les
-fichiers de police sont fournis dans \path{docs/latex/fonts}.}
 
 \end{document}
