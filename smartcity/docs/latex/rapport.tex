@@ -1,6 +1,6 @@
-\documentclass[11pt,a4paper,parskip=half]{scrartcl}
+\documentclass[11pt,a4paper,parskip=half,DIV=12,headinclude,footinclude]{scrartcl}
 
-\usepackage[a4paper, top=2.8cm, bottom=2.8cm, left=2.5cm, right=2.5cm, headheight=15pt]{geometry}
+% --- Typography: Inter remains the only document typeface ---
 \usepackage{fontspec}
 \usepackage[french]{babel}
 \usepackage{microtype}
@@ -11,10 +11,10 @@
 \usepackage{setspace}
 \usepackage{listings}
 \usepackage{hyperref}
-\usepackage{tcolorbox}
-\usepackage[headsepline=0.5pt,footsepline=0.5pt]{scrlayer-scrpage}
+\usepackage{scrlayer-scrpage}
+\usepackage{enumitem}
+\usepackage{needspace}
 
-% Font configuration (Inter preserved)
 \setmainfont{Inter}[
   Path           = fonts/,
   Extension      = .ttf,
@@ -26,85 +26,116 @@
 
 \DeclareFontShape{TU}{Inter(0)}{b}{sc}{<-> ssub*Inter(0)/b/n}{}
 
-% Refined Color Palette
-\definecolor{ink}{HTML}{12161C}
-\definecolor{muted}{HTML}{5B6673}
-\definecolor{brand}{HTML}{0EA5E9}
-\definecolor{branddark}{HTML}{0369A1}
-\definecolor{brandsoft}{HTML}{F0F9FF}
-\definecolor{codebg}{HTML}{F8FAFC}
-\definecolor{bordercolor}{HTML}{E2E8F0}
+% --- Restrained visual identity ---
+\definecolor{ink}{HTML}{17212B}
+\definecolor{muted}{HTML}{667482}
+\definecolor{brand}{HTML}{0F9F95}
+\definecolor{branddark}{HTML}{087E78}
+\definecolor{brandsoft}{HTML}{EAF6F4}
+\definecolor{codebg}{HTML}{F3F6F8}
+\definecolor{rulecolor}{HTML}{DCE4E8}
+\definecolor{paperwhite}{HTML}{FFFFFF}
 
-% Header & Footer Styling
-\clearpairofpagestyles
-\ihead{\small\color{muted}\sffamily CityTrace --- Rapport de mini-projet}
-\ohead{\small\color{muted}\sffamily Yassir Hannaoui}
-\ofoot{\small\color{muted}\sffamily Page \thepage}
-\setkomafont{headsepline}{\color{bordercolor}}
-\setkomafont{footsepline}{\color{bordercolor}}
-
-% Typography & KOMA Font Settings
-\setkomafont{title}{\bfseries\fontsize{26}{30}\selectfont\color{ink}}
-\setkomafont{subtitle}{\large\mdseries\color{muted}}
-\setkomafont{author}{\color{muted}\small}
-\setkomafont{date}{\color{muted}\small}
-\setkomafont{section}{\bfseries\Large\color{branddark}}
+% --- KOMA-Script typography ---
+\setkomafont{title}{\bfseries\fontsize{34}{39}\selectfont\color{ink}}
+\setkomafont{subtitle}{\mdseries\fontsize{13}{18}\selectfont\color{muted}}
+\setkomafont{author}{\small\color{ink}}
+\setkomafont{date}{\small\color{muted}}
+\setkomafont{section}{\bfseries\Large\color{ink}}
 \setkomafont{subsection}{\bfseries\large\color{ink}}
 \setkomafont{caption}{\small\upshape\color{muted}}
 \setkomafont{captionlabel}{\bfseries\upshape\color{branddark}}
 
-\RedeclareSectionCommand[beforeskip=1.8em,afterskip=0.6em]{section}
-\RedeclareSectionCommand[beforeskip=1.2em,afterskip=0.4em]{subsection}
+\renewcommand*{\sectionformat}{\textcolor{brand}{\thesection\autodot}\enskip}
+\renewcommand*{\subsectionformat}{\textcolor{brand}{\thesubsection\autodot}\enskip}
 
+\RedeclareSectionCommand[
+  beforeskip=2.0em,
+  afterskip=0.75em,
+  afterindent=false
+]{section}
+\RedeclareSectionCommand[
+  beforeskip=1.25em,
+  afterskip=0.45em,
+  afterindent=false
+]{subsection}
+
+% --- Page rhythm and whitespace ---
 \setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
 \setlength{\emergencystretch}{3em}
-\setstretch{1.12}
-\renewcommand{\arraystretch}{1.25}
+\setstretch{1.13}
+\renewcommand{\arraystretch}{1.3}
+\setlength{\tabcolsep}{9pt}
+\setlength{\textfloatsep}{1.4em plus 0.3em minus 0.2em}
+\setlength{\intextsep}{1.2em plus 0.3em minus 0.2em}
+\setlength{\abovecaptionskip}{0.55em}
+\setlength{\belowcaptionskip}{0.2em}
+\setlength{\fboxsep}{7pt}
+\setlength{\fboxrule}{0.4pt}
+
 \graphicspath{{../screenshots/}}
 \urlstyle{same}
 \addto\captionsfrench{\renewcommand{\tablename}{Tableau}}
 
-% Styled Blockquote Container
-\tcbuselibrary{skins,breakable}
-\tcolorboxenvironment{quote}{
-  enhanced,
-  boxrule=0.5pt,
-  colframe=brand!40,
-  colback=brandsoft,
-  arc=4pt,
-  left=12pt, right=12pt, top=8pt, bottom=8pt,
-  leftrule=3.5pt
-}
+% --- Running header and footer ---
+\clearpairofpagestyles
+\ihead{\small\color{muted}CITYTRACE}
+\ohead{\small\color{muted}Rapport de mini-projet}
+\setheadsepline{0.4pt}
+\setfootsepline{0pt}
+\cfoot{\small\color{muted}\pagemark}
+\setkomafont{pagehead}{\normalfont}
+\setkomafont{pagefoot}{\normalfont}
+\pagestyle{scrheadings}
 
-% Code Listing Styling
+% --- Tables ---
+\renewcommand{\arraystretch}{1.3}
+\newcommand{\tableheadstyle}{\rowcolor{brandsoft}\color{ink}\color{ink}}
+
+% --- Code listings ---
 \lstset{
   basicstyle=\ttfamily\footnotesize\color{ink},
   backgroundcolor=\color{codebg},
   frame=single,
-  rulecolor=\color{bordercolor},
-  framerule=0.6pt,
-  framesep=8pt,
-  xleftmargin=2pt,
-  xrightmargin=2pt,
+  rulecolor=\color{rulecolor},
+  framesep=0.8em,
+  framerule=0.4pt,
+  xleftmargin=0pt,
+  xrightmargin=0pt,
   breaklines=true,
   columns=fullflexible,
   keepspaces=true,
   showstringspaces=false,
-  aboveskip=1em,
-  belowskip=1em,
+  aboveskip=0.9em,
+  belowskip=0.9em,
   keywordstyle=\bfseries\color{branddark},
   commentstyle=\itshape\color{muted},
-  stringstyle=\color{brand},
-  morekeywords={revert,emit,uint8,Status,internal,pure,returns,function,if,return,bool},
+  morekeywords={revert,emit,uint8,Status,internal,pure,returns},
 }
 
-% Hyperref Configuration
+% --- Links and PDF metadata ---
 \hypersetup{
   colorlinks=true,
   linkcolor=branddark,
   urlcolor=branddark,
+  citecolor=branddark,
   pdftitle={CityTrace --- Registre de signalements urbains},
   pdfauthor={Yassir Hannaoui},
+  pdfsubject={Rapport de mini-projet},
+  pdfcreator={LaTeX}
+}
+
+% Keep figures visually contained without changing their source images.
+\let\originalincludegraphics\includegraphics
+\renewcommand{\includegraphics}[2][]{%
+  \begingroup
+  \setlength{\fboxsep}{0pt}%
+  \setlength{\fboxrule}{0.4pt}%
+  \fcolorbox{rulecolor}{paperwhite}{%
+    \originalincludegraphics[#1]{#2}%
+  }%
+  \endgroup
 }
 
 \title{CityTrace}
@@ -115,14 +146,15 @@
 \begin{document}
 
 \maketitle
-\noindent{\color{brand}\rule{\textwidth}{0.8pt}}%
-
-\vspace{0.4em}
+\vspace{-0.65em}
+\noindent{\color{brand}\rule{\textwidth}{1.6pt}}
+\vspace{0.7em}
 
 \begin{quote}
 \small\color{muted}
     \url{https://github.com/MadMax-5000/blockchain}
 \end{quote}
+\vspace{0.3em}
 
 \section{Le point de départ}
 
@@ -186,7 +218,7 @@ sans aucune étape municipale prématurée.
 la date et la priorité ; le statut initial, lui, n'est pas un champ du formulaire.}
 \end{figure}
 
-Pour une campagne municipale, ce formulaire serait ridiculous. L'import Excel lit
+Pour une campagne municipale, ce formulaire serait ridicule. L'import Excel lit
 le classeur dans le navigateur avec SheetJS, puis contrôle les neuf colonnes
 attendues, les dates, les énumérations, les doublons du fichier et ceux déjà
 présents on-chain. Les lignes fautives sont signalées et ne peuvent pas être
@@ -216,7 +248,7 @@ lui donne les deux rôles suivants.
 \caption{Deux rôles suffisent pour la démonstration.}
 \begin{tabularx}{\textwidth}{@{}lX@{}}
 \toprule
-\rowcolor{brandsoft}
+\rowcolor{brandsoft}\color{ink}
 \textbf{Rôle} & \textbf{Ce qu'il autorise} \\
 \midrule
 \texttt{AGENT\_ROLE} & affecter une équipe, avancer le statut, importer un lot \\
@@ -243,7 +275,7 @@ nulle part dans le frontend.
 \caption{Relevés sur le nœud local de référence.}
 \begin{tabularx}{\textwidth}{@{}lXl@{}}
 \toprule
-\rowcolor{brandsoft}
+\rowcolor{brandsoft}\color{ink}
 \textbf{Commande} & \textbf{Contrôle} & \textbf{Résultat} \\
 \midrule
 \texttt{npm test} & rôles, doublons, transitions, lots, pause, événements & \textbf{31 passing} \\
